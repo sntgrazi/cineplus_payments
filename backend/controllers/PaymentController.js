@@ -14,17 +14,7 @@ const checkoutSchema = Joi.object({
   customer: Joi.object({
     full_name: Joi.string().min(2).max(150).required(),
     email: Joi.string().email().required(),
-    phone: Joi.string().required(),
-    cpf: Joi.string().pattern(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/).optional(),
-    birth_date: Joi.date().optional(),
-    address: Joi.object({
-      street: Joi.string().optional(),
-      number: Joi.string().optional(),
-      neighborhood: Joi.string().optional(),
-      city: Joi.string().optional(),
-      state: Joi.string().optional(),
-      zip_code: Joi.string().optional()
-    }).optional()
+    phone: Joi.string().required()
   }).required()
 });
 

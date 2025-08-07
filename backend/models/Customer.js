@@ -29,22 +29,6 @@ module.exports = (sequelize) => {
     validate: {
       notEmpty: true
     }
-  },
-  cpf: {
-    type: DataTypes.STRING(14),
-    allowNull: true,
-    validate: {
-      is: /^\d{3}\.\d{3}\.\d{3}-\d{2}$/
-    }
-  },
-  birth_date: {
-    type: DataTypes.DATEONLY,
-    allowNull: true
-  },
-  address: {
-    type: DataTypes.JSON,
-    allowNull: true,
-    comment: 'Endereço completo do cliente'
   }
 }, {
   tableName: 'customers',
@@ -52,9 +36,6 @@ module.exports = (sequelize) => {
     {
       unique: true,
       fields: ['email']
-    },
-    {
-      fields: ['cpf']
     }
   ]
 });

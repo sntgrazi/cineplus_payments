@@ -2,6 +2,7 @@ const express = require('express');
 const planRoutes = require('./plans');
 const paymentRoutes = require('./payments');
 const authRoutes = require('./auth');
+const adminRoutes = require('./admin');
 
 const router = express.Router();
 
@@ -9,6 +10,7 @@ const router = express.Router();
 router.use('/auth', authRoutes);
 router.use('/plans', planRoutes);
 router.use('/payments', paymentRoutes);
+router.use('/admin', adminRoutes);
 
 // Rota de teste
 router.get('/test', (req, res) => {

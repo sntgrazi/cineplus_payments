@@ -41,15 +41,11 @@ CREATE TABLE IF NOT EXISTS customers (
   id INT PRIMARY KEY AUTO_INCREMENT,
   full_name VARCHAR(255) NOT NULL,
   email VARCHAR(255) UNIQUE NOT NULL,
-  cpf VARCHAR(14) UNIQUE NOT NULL,
-  phone VARCHAR(20),
-  date_of_birth DATE,
-  address TEXT,
+  phone VARCHAR(20) NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   
-  INDEX idx_email (email),
-  INDEX idx_cpf (cpf)
+  INDEX idx_email (email)
 );
 
 -- Criar tabela de pagamentos
@@ -104,8 +100,8 @@ INSERT INTO plans (name, description, price, currency, duration_months, features
  true, 4, NOW(), NOW());
 
 -- Inserir um cliente de exemplo para testes
-INSERT INTO customers (full_name, email, phone, cpf, created_at, updated_at) VALUES
-('João Silva', 'joao.silva@exemplo.com', '11999999999', '123.456.789-00', NOW(), NOW());
+INSERT INTO customers (full_name, email, phone, created_at, updated_at) VALUES
+('João Silva', 'joao.silva@exemplo.com', '11999999999', NOW(), NOW());
 
 -- Inserir um pagamento de exemplo
 INSERT INTO payments (plan_id, customer_id, amount, currency, status, created_at, updated_at) VALUES

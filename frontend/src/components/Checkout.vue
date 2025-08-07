@@ -69,95 +69,6 @@
                 />
               </div>
 
-              <div class="form-group">
-                <label class="form-label">CPF</label>
-                <input
-                  v-model="form.cpf"
-                  type="text"
-                  class="form-input"
-                  placeholder="000.000.000-00"
-                  @input="formatCPF"
-                />
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">Data de Nascimento</label>
-                <input
-                  v-model="form.birth_date"
-                  type="date"
-                  class="form-input"
-                />
-              </div>
-
-              <!-- Address -->
-              <div class="mt-8">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Endereço (Opcional)</h3>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div class="form-group">
-                    <label class="form-label">CEP</label>
-                    <input
-                      v-model="form.address.zip_code"
-                      type="text"
-                      class="form-input"
-                      placeholder="00000-000"
-                      @input="formatCEP"
-                      @blur="searchCEP"
-                    />
-                  </div>
-
-                  <div class="form-group">
-                    <label class="form-label">Rua</label>
-                    <input
-                      v-model="form.address.street"
-                      type="text"
-                      class="form-input"
-                      placeholder="Nome da rua"
-                    />
-                  </div>
-
-                  <div class="form-group">
-                    <label class="form-label">Número</label>
-                    <input
-                      v-model="form.address.number"
-                      type="text"
-                      class="form-input"
-                      placeholder="123"
-                    />
-                  </div>
-
-                  <div class="form-group">
-                    <label class="form-label">Bairro</label>
-                    <input
-                      v-model="form.address.neighborhood"
-                      type="text"
-                      class="form-input"
-                      placeholder="Nome do bairro"
-                    />
-                  </div>
-
-                  <div class="form-group">
-                    <label class="form-label">Cidade</label>
-                    <input
-                      v-model="form.address.city"
-                      type="text"
-                      class="form-input"
-                      placeholder="Nome da cidade"
-                    />
-                  </div>
-
-                  <div class="form-group">
-                    <label class="form-label">Estado</label>
-                    <select v-model="form.address.state" class="form-select">
-                      <option value="">Selecione...</option>
-                      <option v-for="state in brazilStates" :key="state.value" :value="state.value">
-                        {{ state.label }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
               <button
                 type="submit"
                 :disabled="loading"
@@ -170,7 +81,7 @@
                   </svg>
                   Processando...
                 </span>
-                <span v-else>Pagar com Mercado Pago</span>
+                <span v-else>Pagar</span>
               </button>
             </form>
           </div>
@@ -263,48 +174,8 @@ const selectedPlan = computed(() => planStore.selectedPlan)
 const form = ref({
   full_name: '',
   email: '',
-  phone: '',
-  cpf: '',
-  birth_date: '',
-  address: {
-    zip_code: '',
-    street: '',
-    number: '',
-    neighborhood: '',
-    city: '',
-    state: ''
-  }
+  phone: ''
 })
-
-const brazilStates = [
-  { value: 'AC', label: 'Acre' },
-  { value: 'AL', label: 'Alagoas' },
-  { value: 'AP', label: 'Amapá' },
-  { value: 'AM', label: 'Amazonas' },
-  { value: 'BA', label: 'Bahia' },
-  { value: 'CE', label: 'Ceará' },
-  { value: 'DF', label: 'Distrito Federal' },
-  { value: 'ES', label: 'Espírito Santo' },
-  { value: 'GO', label: 'Goiás' },
-  { value: 'MA', label: 'Maranhão' },
-  { value: 'MT', label: 'Mato Grosso' },
-  { value: 'MS', label: 'Mato Grosso do Sul' },
-  { value: 'MG', label: 'Minas Gerais' },
-  { value: 'PA', label: 'Pará' },
-  { value: 'PB', label: 'Paraíba' },
-  { value: 'PR', label: 'Paraná' },
-  { value: 'PE', label: 'Pernambuco' },
-  { value: 'PI', label: 'Piauí' },
-  { value: 'RJ', label: 'Rio de Janeiro' },
-  { value: 'RN', label: 'Rio Grande do Norte' },
-  { value: 'RS', label: 'Rio Grande do Sul' },
-  { value: 'RO', label: 'Rondônia' },
-  { value: 'RR', label: 'Roraima' },
-  { value: 'SC', label: 'Santa Catarina' },
-  { value: 'SP', label: 'São Paulo' },
-  { value: 'SE', label: 'Sergipe' },
-  { value: 'TO', label: 'Tocantins' }
-]
 
 const formatPrice = (price) => {
   return parseFloat(price).toFixed(2).replace('.', ',')
@@ -317,39 +188,6 @@ const formatPhone = (event) => {
   form.value.phone = value
 }
 
-const formatCPF = (event) => {
-  let value = event.target.value.replace(/\D/g, '')
-  value = value.replace(/(\d{3})(\d)/, '$1.$2')
-  value = value.replace(/(\d{3})(\d)/, '$1.$2')
-  value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2')
-  form.value.cpf = value
-}
-
-const formatCEP = (event) => {
-  let value = event.target.value.replace(/\D/g, '')
-  value = value.replace(/^(\d{5})(\d)/, '$1-$2')
-  form.value.address.zip_code = value
-}
-
-const searchCEP = async () => {
-  const cep = form.value.address.zip_code.replace(/\D/g, '')
-  if (cep.length === 8) {
-    try {
-      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`)
-      const data = await response.json()
-      
-      if (!data.erro) {
-        form.value.address.street = data.logradouro
-        form.value.address.neighborhood = data.bairro
-        form.value.address.city = data.localidade
-        form.value.address.state = data.uf
-      }
-    } catch (error) {
-      console.log('Erro ao buscar CEP:', error)
-    }
-  }
-}
-
 const processPayment = async () => {
   try {
     loading.value = true
@@ -359,10 +197,7 @@ const processPayment = async () => {
       customer: {
         full_name: form.value.full_name,
         email: form.value.email,
-        phone: form.value.phone.replace(/\D/g, ''),
-        cpf: form.value.cpf || null,
-        birth_date: form.value.birth_date || null,
-        address: form.value.address.street ? form.value.address : null
+        phone: form.value.phone.replace(/\D/g, '')
       }
     }
 

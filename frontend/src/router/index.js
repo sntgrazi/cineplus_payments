@@ -56,7 +56,7 @@ const routes = [
   {
     path: '/admin',
     name: 'admin',
-    component: () => import('@/views/AdminNew.vue'),
+    component: () => import('@/views/Admin.vue'),
     meta: {
       title: 'CinePlus - Administração',
       requiresAuth: true,
